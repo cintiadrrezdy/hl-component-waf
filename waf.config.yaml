@@ -202,7 +202,7 @@
 
 # # IP sets used in custom resources
 # cr_ip_sets:
-#   rate-limit:
+#   rate_limit:
 #     # Example values below
 #     - value: 172.16.0.0/16
 #     - value: 127.0.0.1/32
@@ -269,7 +269,7 @@
 
 # # Custom resource configuration
 # custom_resource_rules:
-#   rate-limit:
+#   rate_limit:
 #     type: RateBasedRule
 #     function_name: WAFRateLimit
 #     action: COUNT
