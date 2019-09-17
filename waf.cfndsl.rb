@@ -6,7 +6,7 @@ CloudFormation do
     type = 'WAF'
   end
   Condition("AssociateWithResource", FnNot(FnEquals(Ref('AssociatedResourceArn'), '')))
-  
+
   Description "#{component_name} - #{component_version}"
 
   safe_stack_name = FnJoin('', FnSplit('-', Ref('AWS::StackName')))
@@ -127,18 +127,21 @@ CloudFormation do
     predicates = []
 
     config["predicates"].each do |predicate|
+      condition = predicate["condition_name"]
+
       case predicate['type']
       when 'RegexMatch'
-        data_id = FnGetAtt(safe_name(predicate["condition_name"]), 'MatchID')  # A custom resource
+        data_id = FnGetAtt(safe_name(condition), 'MatchID')  # A custom resource
 
       when 'ByteMatch', 'SqlInjectionMatch', 'XssMatch'
-        data_id = Ref(safe_name(predicate["condition_name"]) + 'MatchSet')
+        data_id = Ref(safe_name(condition) + 'MatchSet')
 
       when 'SizeConstraint'
-        data_id = Ref(safe_name(predicate["condition_name"]) + 'Set')
+        data_id = Ref(safe_name(condition) + 'Set')
 
       when 'IPMatch'
-        data_id = Ref(safe_name(predicate["condition_name"]) + 'IPSet')
+        next if !defined?(ip_sets) or !ip_sets.key?(condition) # Allow an empty IP set
+        data_id = Ref(safe_name(condition) + 'IPSet')
       end
 
       predicates << {
@@ -152,7 +155,7 @@ CloudFormation do
       Type("AWS::#{type}::Rule")
       Property("Name", FnSub("${EnvironmentName}-#{name}"))
       Property("MetricName", FnJoin('', [safe_stack_name, safe_name(name)]))
-      Property("Predicates",  predicates)
+      Property("Predicates",  predicates) if !predicates.empty?
     end
 
   end if defined? rules
