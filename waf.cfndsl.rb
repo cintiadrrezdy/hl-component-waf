@@ -1,5 +1,7 @@
 CloudFormation do
 
+  outputs = []
+
   if defined? type and type.downcase == 'regional'
     type = 'WAFRegional'
   else
@@ -31,6 +33,8 @@ CloudFormation do
       Property("SqlInjectionMatchTuples", tuple_list)
     end
 
+    outputs << "#{safe_name(name)}MatchSet"
+
   end if defined? sql_injection_match_sets
 
   # Cross-site scripting match conditions
@@ -52,6 +56,8 @@ CloudFormation do
       Property("Name", FnSub("${EnvironmentName}-#{name}"))
       Property("XssMatchTuples", tuple_list)
     end
+
+    outputs << "#{safe_name(name)}MatchSet"
 
   end if defined? xss_match_sets
 
@@ -77,6 +83,8 @@ CloudFormation do
       Property("SizeConstraints", tuple_list)
     end
 
+    outputs << "#{safe_name(name)}Set"
+
   end if defined? size_constraint_sets
 
   # Byte match sets
@@ -101,6 +109,8 @@ CloudFormation do
       Property("ByteMatchTuples", tuple_list)
     end
 
+    outputs << "#{safe_name(name)}MatchSet"
+
   end if defined? byte_match_sets
 
   # IP descriptor sets
@@ -119,6 +129,8 @@ CloudFormation do
       Property("Name", FnSub("${EnvironmentName}-#{name}"))
       Property("IPSetDescriptors", descriptor_list)
     end
+
+    outputs << "#{safe_name(name)}IPSet"
 
   end if defined? ip_sets
 
@@ -158,6 +170,8 @@ CloudFormation do
       Property("Predicates",  predicates) if !predicates.empty?
     end
 
+    outputs << safe_name(name)
+
   end if defined? rules
 
   if defined? web_acl
@@ -179,7 +193,7 @@ CloudFormation do
       Property("Rules", rules)
     end
 
-    Output('WebACL', Ref('WebACL'))
+    outputs << "WebACL"
 
     associations.each do |resource_name, resource_arn|
       Resource("WebACLAssociation#{resource_name}") do
@@ -202,8 +216,10 @@ CloudFormation do
   if defined? custom_resource_rules
     custom_resource_rules.each do |name, config|
 
+      resource_name = "#{safe_name(name)}RateBasedRule"
+
       if config['type'] == 'RateBasedRule'
-        Resource("#{safe_name(name)}RateBasedRule") {
+        Resource(resource_name) {
           Type 'Custom::WAFRateLimit'
           Property('ServiceToken', FnGetAtt(config['function_name'], 'Arn'))
           Property('RuleName',  FnSub("${EnvironmentName}-#{name}"))
@@ -217,7 +233,18 @@ CloudFormation do
           Property('Regional',  config['regional'])
           Property('IPSet',     generate_waf_ip_set(cr_ip_sets, ['rate_limit']))
         }
+
+        Output(resource_name) do
+          Value(FnGetAtt(resource_name, "Arn"))
+        end
       end
+    end
+  end
+
+  outputs.each do |output|
+    Output(output) do
+      Export FnSub("${EnvironmentName}-#{output}")
+      Value(Ref(output))
     end
   end
 
