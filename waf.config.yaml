@@ -302,3 +302,10 @@
 #         - waf:*
 #       resource:
 #         - '*'
+
+# # Web ACL associations.
+# # The values (e.g. WordpressLoadBalancerArn) must be defined
+# # as parameters to the top-level stack.
+# associations:
+#   Wordpress: WordpressLoadBalancerArn
+#   Api: ApiLoadBalancerArn

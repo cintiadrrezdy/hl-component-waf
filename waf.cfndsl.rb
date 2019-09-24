@@ -181,6 +181,14 @@ CloudFormation do
 
     Output('WebACL', Ref('WebACL'))
 
+    associations.each do |resource_name, resource_arn|
+      Resource("WebACLAssociation#{resource_name}") do
+        Type "AWS::WAFRegional::WebACLAssociation"
+        Property("ResourceArn", Ref(resource_arn))
+        Property("WebACLId", Ref('WebACL'))
+      end
+    end if defined?(associations)
+
     if type == 'WAFRegional'
       Resource("WebACLAssociation") do
         Condition 'AssociateWithResource'
