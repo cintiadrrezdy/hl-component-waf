@@ -32,6 +32,10 @@ export_rules: true
 #       priority: 60
 #       action: COUNT
 
+#     detect-insecure-php-rule:
+#       priority: 70
+#       action: COUNT
+
 
 
 # # WAF rules
@@ -77,6 +81,13 @@ export_rules: true
 #         condition_name: blacklist
 #         negated: "false"
 #         type: IPMatch
+
+#   detect-insecure-php-rule:
+#     predicates:
+#       -
+#         condition_name: detect-insecure-php
+#         negated: "false"
+#         type: ByteMatch
 
 
 # # SQL injection match conditions
@@ -191,6 +202,47 @@ export_rules: true
 #       target_string: ://
 #       text_transformation: HTML_ENTITY_DECODE
 
+#   detect-insecure-php:
+#     -
+#       field_type: QUERY_STRING
+#       positional_constraint: CONTAINS
+#       target_string: _SERVER[
+#       text_transformation: URL_DECODE
+#     -
+#       field_type: QUERY_STRING
+#       positional_constraint: CONTAINS
+#       target_string: _ENV[
+#       text_transformation: URL_DECODE
+#     -
+#       field_type: QUERY_STRING
+#       positional_constraint: CONTAINS
+#       target_string: auto_prepend_file=
+#       text_transformation: URL_DECODE
+#     -
+#       field_type: QUERY_STRING
+#       positional_constraint: CONTAINS
+#       target_string: auto_append_file=
+#       text_transformation: URL_DECODE
+#     -
+#       field_type: QUERY_STRING
+#       positional_constraint: CONTAINS
+#       target_string: auto_url_file=
+#       text_transformation: URL_DECODE
+#     -
+#       field_type: QUERY_STRING
+#       positional_constraint: CONTAINS
+#       target_string: disable_functions=
+#       text_transformation: URL_DECODE
+#     -
+#       field_type: QUERY_STRING
+#       positional_constraint: CONTAINS
+#       target_string: open_basedir=
+#       text_transformation: URL_DECODE
+#     -
+#       field_type: QUERY_STRING
+#       positional_constraint: CONTAINS
+#       target_string: safe_mode=
+#       text_transformation: URL_DECODE
 
 # # IP match conditions
 # ip_sets:
