@@ -1,7 +1,7 @@
 def safe_name(str)
   # Convert a string to PascalCase
   strs = str.split(/[-,_]/)
-  return strs.map { |s| s.capitalize }.join()
+  return strs.map { |s| s[0].upcase + s[1..-1] }.join()
 end
 
 
