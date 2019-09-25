@@ -201,7 +201,7 @@ CloudFormation do
       Resource("WebACLAssociation#{res_name}#{type}") do
         Type "AWS::WAFRegional::WebACLAssociation"
         Property("ResourceArn", Ref(res_arn))
-        Property("WebACLId", Ref('WebACL'))
+        Property("WebACLId", Ref(resource_name))
       end
     end if defined?(associations)
 
