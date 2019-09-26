@@ -5,6 +5,9 @@ CloudFormation do
   else
     type = ''
   end
+
+  export_rules = true if !defined?(export_rules)
+
   Condition("AssociateWithResource", FnNot(FnEquals(Ref('AssociatedResourceArn'), '')))
 
   Description "#{component_name} - #{component_version}"
@@ -233,11 +236,11 @@ CloudFormation do
           Property('Action',    config['action'])
           Property('Priority',  config['priority'])
           Property('Regional',  config['regional'])
-          Property('IPSet',     generate_waf_ip_set(cr_ip_sets, ['rate_limit']))
+          Property('IPSet',     generate_waf_ip_set(cr_ip_sets, ['rate_limit'])) if defined?(cr_ip_sets)
         }
 
         Output(resource_name) do
-          Value(FnGetAtt(resource_name, "Arn"))
+          Value(FnGetAtt(resource_name, "RuleID"))
           Export FnSub("${EnvironmentName}-#{resource_name}") if export_rules
         end
       end
