@@ -13,6 +13,9 @@ CfhighlanderTemplate do
     end if defined?(associations)
   end
 
-  LambdaFunctions 'custom_resource_functions' if defined? custom_resource_functions
-
+  if defined?(custom_resource_functions)
+    LambdaFunctions 'custom_resource_functions'
+  elsif defined?(functions) and defined?(distribution)
+    Extends 'lambda'
+  end
 end
