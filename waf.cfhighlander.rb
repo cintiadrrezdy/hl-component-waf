@@ -16,6 +16,6 @@ CfhighlanderTemplate do
   if defined?(custom_resource_functions)
     LambdaFunctions 'custom_resource_functions'
   elsif defined?(functions) and defined?(distribution)
-    Extends 'lambda'
+    Extends 'git:https://github.com/base2Services/hl-component-lambda.git#log-group'
   end
 end
