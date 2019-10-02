@@ -1,364 +1,365 @@
 export_rules: true
+export_acl: true
 # type: regional
 
-# # Web ACL
-# web_acl:
-#   name: web-acl
-#   metric_name: web-acl
-#   default_action: ALLOW
+# Web ACL
+web_acl:
+  name: web-acl
+  metric_name: web-acl
+  default_action: ALLOW
 
-#   rules:
-#     server-side-includes-rule:
-#       priority: 10
-#       action: COUNT
+  rules:
+    server-side-includes-rule:
+      priority: 10
+      action: COUNT
 
-#     sql-injection-rule:
-#       action: COUNT
-#       priority: 20
+    sql-injection-rule:
+      action: COUNT
+      priority: 20
 
-#     size-constraints-rule:
-#       priority: 30
-#       action: COUNT
+    size-constraints-rule:
+      priority: 30
+      action: COUNT
 
-#     xss-rule:
-#       priority: 40
-#       action: COUNT
+    xss-rule:
+      priority: 40
+      action: COUNT
 
-#     path-traversal-rule:
-#       priority: 50
-#       action: COUNT
+    path-traversal-rule:
+      priority: 50
+      action: COUNT
 
-#     blacklist-rule:
-#       priority: 60
-#       action: COUNT
+    blacklist-rule:
+      priority: 60
+      action: COUNT
 
-#     detect-insecure-php-rule:
-#       priority: 70
-#       action: COUNT
-
-
-
-# # WAF rules
-# rules:
-#   server-side-includes-rule:
-#     predicates:
-#       -
-#         condition_name: server-side-includes
-#         negated: "false"
-#         type: ByteMatch
-
-#   sql-injection-rule:
-#     predicates:
-#       -
-#         condition_name: sql-injection
-#         negated: "false"
-#         type: SqlInjectionMatch
-
-#   size-constraints-rule:
-#     predicates:
-#       -
-#         condition_name: size-constraints
-#         negated: "false"
-#         type: SizeConstraint
-
-#   xss-rule:
-#     predicates:
-#       -
-#         condition_name: xss
-#         negated: "false"
-#         type: XssMatch
-
-#   path-traversal-rule:
-#     predicates:
-#       -
-#         condition_name: path-traversal
-#         negated: "false"
-#         type: ByteMatch
-
-#   blacklist-rule:
-#     predicates:
-#       -
-#         condition_name: blacklist
-#         negated: "false"
-#         type: IPMatch
-
-#   detect-insecure-php-rule:
-#     predicates:
-#       -
-#         condition_name: detect-insecure-php
-#         negated: "false"
-#         type: ByteMatch
-
-
-# # SQL injection match conditions
-# sql_injection_match_sets:
-#   sql-injection:
-#     -
-#       field_type: BODY
-#       text_transformation: HTML_ENTITY_DECODE
-#     -
-#       field_type: BODY
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: HEADER
-#       field_data: Cookie
-#       text_transformation: HTML_ENTITY_DECODE
-#     -
-#       field_type: HEADER
-#       field_data: Cookie
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       text_transformation: HTML_ENTITY_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: URI
-#       text_transformation: HTML_ENTITY_DECODE
-#     -
-#       field_type: URI
-#       text_transformation: URL_DECODE
-
-
-# # String match conditions
-# byte_match_sets:
-#   server-side-includes:
-#     -
-#       field_type: URI
-#       positional_constraint: ENDS_WITH
-#       target_string: .conf
-#       text_transformation: LOWERCASE
-#     -
-#       field_type: URI
-#       positional_constraint: ENDS_WITH
-#       target_string: .ini
-#       text_transformation: LOWERCASE
-#     -
-#       field_type: URI
-#       positional_constraint: ENDS_WITH
-#       target_string: .cfg
-#       text_transformation: LOWERCASE
-#     -
-#       field_type: URI
-#       positional_constraint: ENDS_WITH
-#       target_string: .backup
-#       text_transformation: LOWERCASE
-#     -
-#       field_type: URI
-#       positional_constraint: ENDS_WITH
-#       target_string: .log
-#       text_transformation: LOWERCASE
-#     -
-#       field_type: URI
-#       positional_constraint: ENDS_WITH
-#       target_string: .bak
-#       text_transformation: LOWERCASE
-#     -
-#       field_type: URI
-#       positional_constraint: ENDS_WITH
-#       target_string: .config
-#       text_transformation: LOWERCASE
-
-#   path-traversal:
-#     -
-#       field_type: URI
-#       positional_constraint: CONTAINS
-#       target_string: ../
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: URI
-#       positional_constraint: CONTAINS
-#       target_string: ../
-#       text_transformation: HTML_ENTITY_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: ../
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: ../
-#       text_transformation: HTML_ENTITY_DECODE
-#     -
-#       field_type: URI
-#       positional_constraint: CONTAINS
-#       target_string: ://
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: URI
-#       positional_constraint: CONTAINS
-#       target_string: ://
-#       text_transformation: HTML_ENTITY_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: ://
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: ://
-#       text_transformation: HTML_ENTITY_DECODE
-
-#   detect-insecure-php:
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: _SERVER[
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: _ENV[
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: auto_prepend_file=
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: auto_append_file=
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: auto_url_file=
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: disable_functions=
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: open_basedir=
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       positional_constraint: CONTAINS
-#       target_string: safe_mode=
-#       text_transformation: URL_DECODE
-
-# # IP match conditions
-# ip_sets:
-#   blacklist:
-#     # Example values below
-#     - value: 10.0.0.0/8
-#     - value: 192.168.0.0/16
-#     - value: 169.254.0.0/16
-
-
-# # IP sets used in custom resources
-# cr_ip_sets:
-#   rate_limit:
-#     # Example values below
-#     - value: 172.16.0.0/16
-#     - value: 127.0.0.1/32
-
-# # Size constraint conditions
-# size_constraint_sets:
-#   size-constraints:
-#     -
-#       comparison_operator: GT
-#       field_type: URI
-#       size: 102400
-#       text_transformation: NONE
-#     -
-#       comparison_operator: GT
-#       field_type: QUERY_STRING
-#       size: 102400
-#       text_transformation: NONE
-#     -
-#       comparison_operator: GT
-#       field_type: URI
-#       size: 102400
-#       text_transformation: NONE
-#     -
-#       comparison_operator: GT
-#       field_data: cookie
-#       field_type: HEADER
-#       size: 102400
-#       text_transformation: NONE
+    detect-insecure-php-rule:
+      priority: 70
+      action: COUNT
 
 
 
-# # Cross-site scripting match conditions
-# xss_match_sets:
-#   xss:
-#     -
-#       field_type: URI
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: URI
-#       text_transformation: HTML_ENTITY_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: QUERY_STRING
-#       text_transformation: HTML_ENTITY_DECODE
-#     -
-#       field_type: BODY
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: BODY
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: URI
-#       text_transformation: HTML_ENTITY_DECODE
-#     -
-#       field_type: HEADER
-#       field_data: cookie
-#       text_transformation: URL_DECODE
-#     -
-#       field_type: HEADER
-#       field_data: cookie
-#       text_transformation: HTML_ENTITY_DECODE
+# WAF rules
+rules:
+  server-side-includes-rule:
+    predicates:
+      -
+        condition_name: server-side-includes
+        negated: "false"
+        type: ByteMatch
 
-# # Custom resource configuration
-# custom_resource_rules:
-#   rate_limit:
-#     type: RateBasedRule
-#     function_name: WAFRateLimit
-#     action: COUNT
-#     priority: 11
-#     rate: 2000
-#     negated: false
-#     regional: false
-#     web_acl_id: WebACL
+  sql-injection-rule:
+    predicates:
+      -
+        condition_name: sql-injection
+        negated: "false"
+        type: SqlInjectionMatch
 
-# custom_resource_functions:
-#   functions:
-#     WAFRateLimit:
-#       code: waf_rate_limit
-#       handler: handler.lambda_handler
-#       runtime: python3.6
-#       timeout: 60
-#       role: WAF
-#       log_retention: 30
+  size-constraints-rule:
+    predicates:
+      -
+        condition_name: size-constraints
+        negated: "false"
+        type: SizeConstraint
 
-#   roles:
-#     WAF:
-#       policies_inline:
-#         - waf
-#         - cloudwatch-logs
+  xss-rule:
+    predicates:
+      -
+        condition_name: xss
+        negated: "false"
+        type: XssMatch
 
-#   custom_policies:
-#     waf:
-#       action:
-#         - waf-regional:*
-#         - waf:*
-#       resource:
-#         - '*'
+  path-traversal-rule:
+    predicates:
+      -
+        condition_name: path-traversal
+        negated: "false"
+        type: ByteMatch
 
-# # Web ACL associations.
-# # The values (e.g. WordpressLoadBalancerArn) must be defined
-# # as parameters to the top-level stack.
-# associations:
-#   Wordpress: WordpressLoadBalancerArn
-#   Api: ApiLoadBalancerArn
+  blacklist-rule:
+    predicates:
+      -
+        condition_name: blacklist
+        negated: "false"
+        type: IPMatch
+
+  detect-insecure-php-rule:
+    predicates:
+      -
+        condition_name: detect-insecure-php
+        negated: "false"
+        type: ByteMatch
+
+
+# SQL injection match conditions
+sql_injection_match_sets:
+  sql-injection:
+    -
+      field_type: BODY
+      text_transformation: HTML_ENTITY_DECODE
+    -
+      field_type: BODY
+      text_transformation: URL_DECODE
+    -
+      field_type: HEADER
+      field_data: Cookie
+      text_transformation: HTML_ENTITY_DECODE
+    -
+      field_type: HEADER
+      field_data: Cookie
+      text_transformation: URL_DECODE
+    -
+      field_type: QUERY_STRING
+      text_transformation: HTML_ENTITY_DECODE
+    -
+      field_type: QUERY_STRING
+      text_transformation: URL_DECODE
+    -
+      field_type: URI
+      text_transformation: HTML_ENTITY_DECODE
+    -
+      field_type: URI
+      text_transformation: URL_DECODE
+
+
+# String match conditions
+byte_match_sets:
+  server-side-includes:
+    -
+      field_type: URI
+      positional_constraint: ENDS_WITH
+      target_string: .conf
+      text_transformation: LOWERCASE
+    -
+      field_type: URI
+      positional_constraint: ENDS_WITH
+      target_string: .ini
+      text_transformation: LOWERCASE
+    -
+      field_type: URI
+      positional_constraint: ENDS_WITH
+      target_string: .cfg
+      text_transformation: LOWERCASE
+    -
+      field_type: URI
+      positional_constraint: ENDS_WITH
+      target_string: .backup
+      text_transformation: LOWERCASE
+    -
+      field_type: URI
+      positional_constraint: ENDS_WITH
+      target_string: .log
+      text_transformation: LOWERCASE
+    -
+      field_type: URI
+      positional_constraint: ENDS_WITH
+      target_string: .bak
+      text_transformation: LOWERCASE
+    -
+      field_type: URI
+      positional_constraint: ENDS_WITH
+      target_string: .config
+      text_transformation: LOWERCASE
+
+  path-traversal:
+    -
+      field_type: URI
+      positional_constraint: CONTAINS
+      target_string: ../
+      text_transformation: URL_DECODE
+    -
+      field_type: URI
+      positional_constraint: CONTAINS
+      target_string: ../
+      text_transformation: HTML_ENTITY_DECODE
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: ../
+      text_transformation: URL_DECODE
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: ../
+      text_transformation: HTML_ENTITY_DECODE
+    -
+      field_type: URI
+      positional_constraint: CONTAINS
+      target_string: ://
+      text_transformation: URL_DECODE
+    -
+      field_type: URI
+      positional_constraint: CONTAINS
+      target_string: ://
+      text_transformation: HTML_ENTITY_DECODE
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: ://
+      text_transformation: URL_DECODE
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: ://
+      text_transformation: HTML_ENTITY_DECODE
+
+  detect-insecure-php:
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: _SERVER[
+      text_transformation: URL_DECODE
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: _ENV[
+      text_transformation: URL_DECODE
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: auto_prepend_file=
+      text_transformation: URL_DECODE
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: auto_append_file=
+      text_transformation: URL_DECODE
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: auto_url_file=
+      text_transformation: URL_DECODE
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: disable_functions=
+      text_transformation: URL_DECODE
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: open_basedir=
+      text_transformation: URL_DECODE
+    -
+      field_type: QUERY_STRING
+      positional_constraint: CONTAINS
+      target_string: safe_mode=
+      text_transformation: URL_DECODE
+
+# IP match conditions
+ip_sets:
+  blacklist:
+    # Example values below
+    - value: 10.0.0.0/8
+    - value: 192.168.0.0/16
+    - value: 169.254.0.0/16
+
+
+# IP sets used in custom resources
+cr_ip_sets:
+  rate_limit:
+    # Example values below
+    - value: 172.16.0.0/16
+    - value: 127.0.0.1/32
+
+# Size constraint conditions
+size_constraint_sets:
+  size-constraints:
+    -
+      comparison_operator: GT
+      field_type: URI
+      size: 102400
+      text_transformation: NONE
+    -
+      comparison_operator: GT
+      field_type: QUERY_STRING
+      size: 102400
+      text_transformation: NONE
+    -
+      comparison_operator: GT
+      field_type: URI
+      size: 102400
+      text_transformation: NONE
+    -
+      comparison_operator: GT
+      field_data: cookie
+      field_type: HEADER
+      size: 102400
+      text_transformation: NONE
+
+
+
+# Cross-site scripting match conditions
+xss_match_sets:
+  xss:
+    -
+      field_type: URI
+      text_transformation: URL_DECODE
+    -
+      field_type: URI
+      text_transformation: HTML_ENTITY_DECODE
+    -
+      field_type: QUERY_STRING
+      text_transformation: URL_DECODE
+    -
+      field_type: QUERY_STRING
+      text_transformation: HTML_ENTITY_DECODE
+    -
+      field_type: BODY
+      text_transformation: URL_DECODE
+    -
+      field_type: BODY
+      text_transformation: URL_DECODE
+    -
+      field_type: URI
+      text_transformation: HTML_ENTITY_DECODE
+    -
+      field_type: HEADER
+      field_data: cookie
+      text_transformation: URL_DECODE
+    -
+      field_type: HEADER
+      field_data: cookie
+      text_transformation: HTML_ENTITY_DECODE
+
+# Custom resource configuration
+custom_resource_rules:
+  rate_limit:
+    type: RateBasedRule
+    function_name: WAFRateLimit
+    action: COUNT
+    priority: 11
+    rate: 2000
+    negated: false
+    regional: false
+    web_acl_id: WebACL
+
+custom_resource_functions:
+  functions:
+    WAFRateLimit:
+      code: waf_rate_limit
+      handler: handler.lambda_handler
+      runtime: python3.6
+      timeout: 60
+      role: WAF
+      log_retention: 30
+
+  roles:
+    WAF:
+      policies_inline:
+        - waf
+        - cloudwatch-logs
+
+  custom_policies:
+    waf:
+      action:
+        - waf-regional:*
+        - waf:*
+      resource:
+        - '*'
+
+# Web ACL associations.
+# The values (e.g. WordpressLoadBalancerArn) must be defined
+# as parameters to the top-level stack.
+associations:
+  Wordpress: WordpressLoadBalancerArn
+  Api: ApiLoadBalancerArn

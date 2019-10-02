@@ -7,6 +7,7 @@ CloudFormation do
   end
 
   export_rules = true if !defined?(export_rules)
+  export_acl = true if !defined?(export_acl)
 
   Condition("AssociateWithResource", FnNot(FnEquals(Ref('AssociatedResourceArn'), '')))
 
@@ -198,6 +199,7 @@ CloudFormation do
 
     Output(resource_name) do
       Value(Ref(resource_name))
+      Export FnSub("${EnvironmentName}-#{web_acl['name']}-#{resource_name}") if export_acl
     end
 
     associations.each do |res_name, res_arn|
@@ -208,7 +210,7 @@ CloudFormation do
       end
     end if defined?(associations)
 
-    if type == 'WAFRegional'
+    if type == 'Regional'
       Resource("WebACLAssociation") do
         Condition 'AssociateWithResource'
         Type "AWS::WAFRegional::WebACLAssociation"
