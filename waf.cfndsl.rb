@@ -204,8 +204,8 @@ CloudFormation do
     end
 
     associations.each do |res_name, res_arn|
-      Condition 'IsUseWAFv1'
       Resource("WebACLAssociation#{res_name}#{type}") do
+        Condition 'IsUseWAFv1'
         Type "AWS::WAFRegional::WebACLAssociation"
         Property("ResourceArn", Ref(res_arn))
         Property("WebACLId", Ref(resource_name))
