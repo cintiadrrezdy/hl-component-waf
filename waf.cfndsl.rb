@@ -10,6 +10,7 @@ CloudFormation do
   export_acl = true if !defined?(export_acl)
 
   Condition("AssociateWithResource", FnNot(FnEquals(Ref('AssociatedResourceArn'), '')))
+  Condition('IsUseWAFv1', FnNot(FnEquals(Ref('EnvironmentName'), 'NOTHING')))
 
   Description "#{component_name} - #{component_version}"
 
@@ -203,6 +204,7 @@ CloudFormation do
     end
 
     associations.each do |res_name, res_arn|
+      Condition 'IsUseWAFv1'
       Resource("WebACLAssociation#{res_name}#{type}") do
         Type "AWS::WAFRegional::WebACLAssociation"
         Property("ResourceArn", Ref(res_arn))
