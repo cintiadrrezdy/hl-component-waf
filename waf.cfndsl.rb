@@ -9,8 +9,10 @@ CloudFormation do
   export_rules = true if !defined?(export_rules)
   export_acl = true if !defined?(export_acl)
 
+  Condition('IsEnvDev', FnEquals(Ref('EnvironmentName'), 'dev'))
+  Condition('IsEnvTest', FnEquals(Ref('EnvironmentName'), 'test'))
   Condition("AssociateWithResource", FnNot(FnEquals(Ref('AssociatedResourceArn'), '')))
-  Condition('IsUseWAFv1', FnNot(FnEquals(Ref('EnvironmentName'), 'NOTHING')))
+  Condition('IsUseWAFv1', FnNot(FnOr([Condition('IsEnvDev'), Condition('IsEnvTest')])))
 
   Description "#{component_name} - #{component_version}"
 
